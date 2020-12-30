@@ -27,11 +27,11 @@ Note that Currency class still exist by default.
 There are two ways to get a currency object. The first is to simply make it.
 
     ISO4217::Currency.new('USD', :name => 'Dollars', :symbol => '$', :exchange_rate => 1)
-    
+
 Or you can lookup a currency by its ISO 4217 code using the *from_code* method.
 
     ISO4217::Currency.from_code('USD')
-    
+
 Once you have a Currency instance you can get basic information about it.
 
     currency = ISO4217::Currency.from_code('USD')
@@ -40,25 +40,25 @@ Once you have a Currency instance you can get basic information about it.
     currency.symbol #=> "$"
     currency.exchange_rate #=> 1.0
     currency.exchange_currency #=> "USD"
-    
+
 Adding Currencies
 -----------------
 
 Currencies keeps an internal list of currencies for use in the ExchangeBank and to be looked up with the *from_code* method. By default this list contains all the currencies in the ISO 4217 standard. A custom currency can be added using the *add* class method.
-    
+
     shiny_button = ISO4217::Currency.new('SBTTN', :name => 'Buttons', :symbol => '☼', :exchange_rate => 1000)
     ISO4217::Currency.add(shiny_button)
-    
+
 To do a massive addition of currencies you can load a yaml file using the *load_file* class method.
 
     ISO4217::Currency.load_file('custom_currency.yaml')
-    
+
 And the yaml file should look like ...
 
     SBTTN:
       name: Buttons
       symbol: ☼
-        
+
 Defaults
 --------
 
@@ -77,7 +77,7 @@ Money Gem
 To use with the money gem you just set the default bank to the currencies bank.
 
     Money.default_bank = ISO4217::Currency::ExchangeBank.new
-    
+
 The Currencies ExchangeBank works the same as the one in the money gem except that if an exchange rate isn't set by default it uses what is set in the currencies gem.
 
 ToDo
@@ -91,11 +91,12 @@ ToDo
 Sponsored By
 ------------
 
-This gem is sponsored by [Teliax][]. [Teliax][] makes business class Voice, [Centrex][](Including Hosted: IVRs, Ring Groups, Extensions and Day Night Mode) and Data services accessible to anyone. You don't have to be a fortune 500 to sound big!
+This fork is maintained by http://www.allcrux.com.
+
 
 Note on Patches/Pull Requests
 -----------------------------
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a

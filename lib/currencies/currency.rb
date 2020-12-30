@@ -42,6 +42,10 @@ class ISO4217::Currency
     end
   end
 
+  def to_s
+    "#{code} #{name}"
+  end
+
   def self.load_file(file)
     YAML.load_file(file).each do |code,options|
       self.add(self.new(code,options))

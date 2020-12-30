@@ -76,8 +76,8 @@ describe ISO4217::Currency do
   end
 
   describe ".major_currencies_selection" do
-    let(:usd) { [ "USD", mock ] }
-    let(:aud) { [ "AUD", mock ] }
+    let(:usd) { [ "USD" ] }
+    let(:aud) { [ "AUD" ] }
     let(:currencies) { [ usd, aud ] }
 
     context "with default settings" do
@@ -99,9 +99,9 @@ describe ISO4217::Currency do
   end
 
   describe ".best_from_currencies" do
-    let(:usd) { mock }
-    let(:pln) { mock }
-    let(:aud) { mock }
+    let(:usd) { double("usd") }
+    let(:pln) { double("pln") }
+    let(:aud) { double("aud") }
 
     context "when given currencies is nil" do
       subject { ISO4217::Currency.best_from_currencies(nil) }
@@ -116,9 +116,9 @@ describe ISO4217::Currency do
     end
 
     context "when major currency exist within currencies" do
-      let(:valid_currencies) { mock(:nil? => false, :empty? => false) }
+      let(:valid_currencies) { double(:nil? => false, :empty? => false) }
       subject do
-        ISO4217::Currency.stub!(:major_currencies_selection => [mock, usd])
+        allow(ISO4217::Currency).to receive(:major_currencies_selection).and_return([double("currency"), usd])
         ISO4217::Currency.best_from_currencies(valid_currencies)
       end
 
@@ -126,9 +126,9 @@ describe ISO4217::Currency do
     end
 
     context "when major currency does not exist within currencies" do
-      let(:valid_currencies) { [ [mock, pln], [mock, aud] ] }
+      let(:valid_currencies) { [ [double("currency"), pln], [double("currency"), aud] ] }
       subject do
-        ISO4217::Currency.stub!(:major_currencies_selection => nil)
+        allow(ISO4217::Currency).to receive(:major_currencies_selection).and_return(nil)
         ISO4217::Currency.best_from_currencies(valid_currencies)
       end
 
@@ -137,9 +137,9 @@ describe ISO4217::Currency do
   end
 
   describe ".list_from_name" do
-    let(:euro_currency) { mock(:name => "Euro") }
+    let(:euro_currency) { double(:name => "Euro") }
     let(:euro) { [ [ "EUR", euro_currency ] ] }
-    let(:dollar_currency) { mock(:name => "Dollars") }
+    let(:dollar_currency) { double(:name => "Dollars") }
     let(:dollars) { [
       [ "USD", dollar_currency ],
       [ "AUD", dollar_currency ]
@@ -147,7 +147,7 @@ describe ISO4217::Currency do
     let(:currencies) { euro + dollars }
 
     subject do
-      ISO4217::Currency.stub!(:currencies => currencies)
+      allow(ISO4217::Currency).to receive(:currencies).and_return(currencies)
       ISO4217::Currency.list_from_name("Dollars")
     end
 
@@ -155,9 +155,9 @@ describe ISO4217::Currency do
   end
 
   describe ".list_from_symbol" do
-    let(:euro_currency) { mock(:symbol => "€") }
+    let(:euro_currency) { double(:symbol => "€") }
     let(:euro) { [ [ "EUR", euro_currency ] ] }
-    let(:dollar_currency) { mock(:symbol => "$") }
+    let(:dollar_currency) { double(:symbol => "$") }
     let(:dollars) { [
       [ "USD", dollar_currency ],
       [ "AUD", dollar_currency ]
@@ -165,7 +165,7 @@ describe ISO4217::Currency do
     let(:currencies) { euro + dollars }
 
     subject do
-      ISO4217::Currency.stub!(:currencies => currencies)
+      allow(ISO4217::Currency).to receive(:currencies).and_return(currencies)
       ISO4217::Currency.list_from_symbol("$")
     end
 
@@ -173,14 +173,12 @@ describe ISO4217::Currency do
   end
 
   describe ".best_from_name" do
-    let(:name) { mock }
-    let(:list_from_name) { mock }
+    let(:name) { double("currency") }
+    let(:list_from_name) { double("currency") }
     describe "behavior" do
       before do
-        ISO4217::Currency.stub!(
-          :best_from_currencies => nil,
-          :list_from_name => list_from_name
-        )
+        allow(ISO4217::Currency).to receive(:best_from_currencies).and_return(nil)
+        allow(ISO4217::Currency).to receive(:list_from_name).and_return(list_from_name)
       end
       after { ISO4217::Currency.best_from_name(name) }
 
@@ -194,12 +192,10 @@ describe ISO4217::Currency do
     end
 
     describe "returns" do
-      let(:best_from_currencies) { mock }
+      let(:best_from_currencies) { double("currency") }
       subject do
-        ISO4217::Currency.stub!(
-          :best_from_currencies => best_from_currencies,
-          :list_from_name => list_from_name
-        )
+        allow(ISO4217::Currency).to receive(:best_from_currencies).and_return(best_from_currencies)
+        allow(ISO4217::Currency).to receive(:list_from_name).and_return(list_from_name)
         ISO4217::Currency.best_from_name(name)
       end
 
@@ -208,14 +204,12 @@ describe ISO4217::Currency do
   end
 
   describe ".best_from_symbol" do
-    let(:symbol) { mock }
-    let(:list_from_symbol) { mock }
+    let(:symbol) { double("currency") }
+    let(:list_from_symbol) { double("currency") }
     describe "behavior" do
       before do
-        ISO4217::Currency.stub!(
-          :best_from_currencies => nil,
-          :list_from_symbol => list_from_symbol
-        )
+        allow(ISO4217::Currency).to receive(:best_from_currencies).and_return(nil)
+        allow(ISO4217::Currency).to receive(:list_from_symbol).and_return(list_from_symbol)
       end
       after { ISO4217::Currency.best_from_symbol(symbol) }
 
@@ -229,12 +223,10 @@ describe ISO4217::Currency do
     end
 
     describe "returns" do
-      let(:best_from_currencies) { mock }
+      let(:best_from_currencies) { double("currency") }
       subject do
-        ISO4217::Currency.stub!(
-          :best_from_currencies => best_from_currencies,
-          :list_from_symbol => list_from_symbol
-        )
+        allow(ISO4217::Currency).to receive(:best_from_currencies).and_return(best_from_currencies)
+        allow(ISO4217::Currency).to receive(:list_from_symbol).and_return(list_from_symbol)
         ISO4217::Currency.best_from_symbol(symbol)
       end
 
@@ -243,8 +235,8 @@ describe ISO4217::Currency do
   end
 
   describe ".best_guess" do
-    let(:eur) { mock }
-    let(:string) { mock(:nil? => false, :empty? => false) }
+    let(:eur) { double("currency") }
+    let(:string) { double(:nil? => false, :empty? => false) }
 
     context "when string not given" do
       subject { ISO4217::Currency.best_guess(nil) }
@@ -260,7 +252,7 @@ describe ISO4217::Currency do
 
     context "when code equal to string exist" do
       subject do
-        ISO4217::Currency.stub!(:from_code).with(string).and_return(eur)
+        allow(ISO4217::Currency).to receive(:from_code).with(string).and_return(eur)
         ISO4217::Currency.best_guess(string)
       end
 
@@ -269,8 +261,8 @@ describe ISO4217::Currency do
 
     context "when best symbol equal to string exist" do
       subject do
-        ISO4217::Currency.stub!(:from_code).with(string).and_return(nil)
-        ISO4217::Currency.stub!(:best_from_symbol).with(string).and_return(eur)
+        allow(ISO4217::Currency).to receive(:from_code).with(string).and_return(nil)
+        allow(ISO4217::Currency).to receive(:best_from_symbol).with(string).and_return(eur)
         ISO4217::Currency.best_guess(string)
       end
 
@@ -279,9 +271,9 @@ describe ISO4217::Currency do
 
     context "when best name equal to string exist" do
       subject do
-        ISO4217::Currency.stub!(:from_code).with(string).and_return(nil)
-        ISO4217::Currency.stub!(:best_from_symbol).with(string).and_return(nil)
-        ISO4217::Currency.stub!(:best_from_name).with(string).and_return(eur)
+        allow(ISO4217::Currency).to receive(:from_code).with(string).and_return(nil)
+        allow(ISO4217::Currency).to receive(:best_from_symbol).with(string).and_return(nil)
+        allow(ISO4217::Currency).to receive(:best_from_name).with(string).and_return(eur)
         ISO4217::Currency.best_guess(string)
       end
 
@@ -290,9 +282,9 @@ describe ISO4217::Currency do
 
     context "when string not exist in any form" do
       subject do
-        ISO4217::Currency.stub!(:from_code).with(string).and_return(nil)
-        ISO4217::Currency.stub!(:best_from_symbol).with(string).and_return(nil)
-        ISO4217::Currency.stub!(:best_from_name).with(string).and_return(nil)
+        allow(ISO4217::Currency).to receive(:from_code).with(string).and_return(nil)
+        allow(ISO4217::Currency).to receive(:best_from_symbol).with(string).and_return(nil)
+        allow(ISO4217::Currency).to receive(:best_from_name).with(string).and_return(nil)
         ISO4217::Currency.best_guess(string)
       end
 
@@ -310,13 +302,13 @@ describe ISO4217::Currency do
   end
 
   describe ".code_from_best_guess" do
-    let(:string) { mock }
-    let(:code) { mock }
-    let(:best_guess) { mock(:try => code) }
+    let(:string) { double("currency") }
+    let(:code) { double("currency") }
+    let(:best_guess) { double(:try => code) }
 
     context "when there is best guess" do
       subject do
-        ISO4217::Currency.stub!(:best_guess).with(string).and_return(best_guess)
+        allow(ISO4217::Currency).to receive(:best_guess).with(string).and_return(best_guess)
         ISO4217::Currency.code_from_best_guess(string)
       end
 
@@ -324,10 +316,10 @@ describe ISO4217::Currency do
     end
 
     context "when there is no best guess" do
-      let(:best_guess) { mock(:try => nil) }
+      let(:best_guess) { double(:try => nil) }
 
       subject do
-        ISO4217::Currency.stub!(:best_guess).with(string).and_return(best_guess)
+        allow(ISO4217::Currency).to receive(:best_guess).with(string).and_return(best_guess)
         ISO4217::Currency.code_from_best_guess(string)
       end
 
@@ -335,7 +327,7 @@ describe ISO4217::Currency do
     end
 
     describe "behavior" do
-      before { ISO4217::Currency.stub!(:best_guess).with(string).and_return(best_guess) }
+      before { allow(ISO4217::Currency).to receive(:best_guess).with(string).and_return(best_guess) }
       after { ISO4217::Currency.code_from_best_guess(string) }
 
       it "should call .best_guess" do
@@ -347,29 +339,4 @@ describe ISO4217::Currency do
       end
     end
   end
-
-  describe "Currency class" do
-    context "when loaded via 'iso4217' existance" do
-      subject { defined?(Currency) }
-
-      it { should be_false }
-    end
-
-    context "when loaded via 'currencies'" do
-      before { require 'currencies' }
-
-      describe "existance" do
-        subject { defined?(Currency) }
-
-        it { should be_true }
-      end
-
-      describe "superclass" do
-        subject { Currency.superclass }
-
-        it { should == ISO4217::Currency }
-      end
-    end
-  end
-
 end

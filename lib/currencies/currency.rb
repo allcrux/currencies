@@ -1,3 +1,5 @@
+require 'json'
+
 module ISO4217
 end
 
@@ -33,10 +35,9 @@ class ISO4217::Currency
     @exchange_currency = self.class.base_currency unless @exchange_currency
     return 1.0 if @code == @exchange_currency
     if self.class.import_exchange_rates
-      http = Net::HTTP.new('download.finance.yahoo.com', 80)
-      response = http.get("/d/quotes.csv?e=.csv&f=sl1d1t1&s=#{@code}#{@exchange_currency}=X")
-      rate = response.body.split(',')[1]
-      rate == '0.0' ? nil : rate.to_f
+      http = Net::HTTP.new('free.currconv.com', 80)
+      response = http.get("/api/v7/convert?q=#{self.class.base_currency}_#{@code}&compact=ultra&apiKey=#{ENV['CURRCONV_API_KEY']}")
+      rate = JSON.parse(response.body).values.first rescue nil
     else
       nil
     end

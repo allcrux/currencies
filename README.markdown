@@ -21,9 +21,6 @@ Or you can install via bundler Gemfile with using only ISO4217::Currency (no Cur
 Basic Usage
 -----------
 
-Note that Currency class still exist by default.
-(is inherited from ISO4217::Currency to keep backward compatibility).
-
 There are two ways to get a currency object. The first is to simply make it.
 
     ISO4217::Currency.new('USD', :name => 'Dollars', :symbol => '$', :exchange_rate => 1)
@@ -40,6 +37,8 @@ Once you have a Currency instance you can get basic information about it.
     currency.symbol #=> "$"
     currency.exchange_rate #=> 1.0
     currency.exchange_currency #=> "USD"
+
+For exchange rate lookups get your free api key at currconv.com and configure the CURRCONV_API_KEY environment variable.
 
 Adding Currencies
 -----------------
@@ -66,7 +65,7 @@ You can set the base currency by using the *base_currency* class method. This de
 
     ISO4217::Currency.base_currency = 'GBP'
 
-The exchange rate is either set manually or if nil looked up on Yahoo Finance and cached. If you want to disable looking up the currency set the *import_exchange_rates* class method to false.
+The exchange rate is either set manually or if nil looked up on currconv.com and cached. If you want to disable looking up the currency set the *import_exchange_rates* class method to false.
 
     ISO4217::Currency.import_exchange_rates = false
 
@@ -110,7 +109,6 @@ Copyright
 ---------
 
 Copyright (c) 2010 hexorx. See LICENSE for details.
-
 
 [Teliax]: http://teliax.com
 [Centrex]: http://en.wikipedia.org/wiki/Centrex

@@ -927,6 +927,10 @@ XPF:
   code: XPF
   name: "Comptoirs Français du Pacifique Francs"
   full_name: "Comptoirs Français du Pacifique Francs"
+XXX:
+  code: XXX
+  name: "No Currency"
+  full_name: "The codes assigned for transactions where no currency is involved"
 YER:
   code: YER
   name: Rials

@@ -890,14 +890,11 @@ UZS:
   unicode_hex:
     - 1083
     - 1074
-VEF:
-  code: VEF
-  name: "Bolivares Fuertes"
-  full_name: "Venezuela Bolivares Fuertes"
-  symbol: Bs
-  unicode_hex:
-    - 1083
-    - 1074
+VES:
+  code: VES
+  name: "Bolivares Soberano"
+  full_name: "Venezuela Bolivares Soberano"
+  symbol: Bs.S
 VND:
   code: VND
   name: Dong
